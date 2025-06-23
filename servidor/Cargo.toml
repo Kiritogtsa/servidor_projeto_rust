@@ -1,0 +1,7 @@
+[package]
+name = "servidor"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+thread_pool = { path = "../thread_pool" }

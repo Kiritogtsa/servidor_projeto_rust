@@ -1,0 +1,15 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "servidor",
+    "thread_pool"
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Tiago"]
+
+[workspace.dependencies]
+# Dependências compartilhadas podem ser definidas aqui se necessário
