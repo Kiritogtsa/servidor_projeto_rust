@@ -2,6 +2,7 @@ mod model;
 use model::body::*;
 use model::head::*;
 use model::request::Request;
+
 use std::{
     fs,
     io::{BufRead, BufReader, Read, Write},
@@ -10,19 +11,12 @@ use std::{
 };
 use thread_pool::model::{status::Statusbase, task::Task};
 
-// chegou a hora de criar uma estrutura para o servidor contendo as rotas, ip, thread, todos os
-// atributos privados, com metodos para mexer so nas rotas, e depois disso um metodo de run que
-// fica com o fluxo para sempre para as thread
-
-// eu preciso criar um objeto que serve de atalho para eu poder extrair os dados da request, isso
-// significa que ja e hora de criar um objeto e criar algumas funçoes para isso
-// depois que eu ja terminar a primeira parte do servidor, e ter um objeto ja pegando os dados e
-// separado em body e head, isso significa que em teoria eu posso voltar para continuar o
-// desevolvimento da minha thread com uma trait de Taskfactory e tambem um jeito logico de fazer o
-// worker reconhecer qual que e a task correta, provavolmente eu va usar uma enum para isso, e na
-// newtask da trait Taskfactory ele vai receber uma string do path e do metodo e com isso ele vai
-// se auto asinalar no worker como um objeto intaciado, e com isso o worker vai criar a task por
-// essa implementação da Taskfactory
+// usar canais para separar a parte do servidor e do ouvinte de coneçoes em threads, e a
+// cominicação deve ser feita atraves dos canais, e o uso de try_recv e Receiver e essencial, para
+// não afetar os routes/workes para isso garantir uma boa separação de atividades, tambem usar o
+// worker para manter a rota, e com isso ele mantem o handle function, metodo e o path("/(alguma
+// coisa)"), isso me garante que quando eu for criar novas task eu passe a função correta para ela
+// e ela executa em forma de try_recv tambem para me da os status
 
 // esta parte ta aqui e assim para servir como exemplo de como implementar uma task que não
 // interropa o fluxo de exeção do rust
@@ -124,7 +118,7 @@ fn handle_connection(mut stream: TcpStream) {
     let raw_body = String::from_utf8_lossy(&body_buf).to_string();
 
     // Monta o enum Body (por enquanto só String)
-    let body: Body<()> = Body::String(raw_body);
+    let body = Body::String(raw_body);
 
     // Monta o Request
     let request = Request { head, body };

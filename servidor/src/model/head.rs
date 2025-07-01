@@ -14,6 +14,15 @@ pub struct Head {
     user_agent: Option<String>,
 }
 
+pub(crate) trait NewTrait {
+    fn content_type(&self) -> Option<&str>;
+}
+
+impl NewTrait for Head {
+    fn content_type(&self) -> Option<&str> {
+        self.headers.get("content-type").map(|s| s.as_str())
+    }
+}
 impl TryFrom<&[String]> for Head {
     type Error = String;
 

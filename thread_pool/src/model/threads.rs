@@ -11,9 +11,9 @@ pub struct Theadcore {
 // servidor usando essa lib para eu não precisar criar de ultima hora para aceitar novas conetiçoes
 
 impl Theadcore {
-    pub fn new(worker: Box<Worker>) -> Self {
+    pub fn new() -> Self {
         Theadcore {
-            worker: vec![worker],
+            worker: Vec::new(),
             status: Statusbase::Running,
         }
     }

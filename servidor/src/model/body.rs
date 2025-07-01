@@ -1,4 +1,4 @@
-pub enum Body<T> {
+pub enum Body {
     String(String),
-    Json(T),
+    Json(serde_json::Value),
 }
