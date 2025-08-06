@@ -27,51 +27,51 @@ use thread_pool::model::{status::Statusbase, task::Task};
 // no caso vai ser so uma variavel chamada de state, para simular um pouco o tokio nesse sentido,
 // para eu não criar um nome novo para esse tipo de variaveis
 // isso me garante um fluxo de trabalho no servidor por agora
-struct taskinteligente<T> {
-    reciever: Receiver<String>,
-    status: Statusbase,
-    object: T,
-}
-impl taskinteligente<Option<String>> {
-    fn new() -> (Self, Sender<String>) {
-        let (tx, rx) = channel();
-        (
-            taskinteligente {
-                reciever: rx,
-                status: Statusbase::Waiting,
-                object: None,
-            },
-            tx,
-        )
-    }
-}
-impl Task for taskinteligente<Option<String>> {
-    fn run(&mut self) -> Statusbase {
-        match self.status {
-            Statusbase::Ready => todo!(),
-            Statusbase::Running => todo!(),
-            Statusbase::Waiting => match self.reciever.try_recv() {
-                Ok(msg) => {
-                    self.object = Some(msg.clone());
-                    self.status = Statusbase::Ready;
-                    Statusbase::Ready
-                }
-                Err(_) => todo!(),
-            },
-
-            Statusbase::Done => todo!(),
-            Statusbase::Error(_) => todo!(),
-        }
-    }
-
-    fn status(&self) -> Statusbase {
-        todo!()
-    }
-
-    fn stop(&mut self) {
-        todo!()
-    }
-}
+// struct taskinteligente<T> {
+//     reciever: Receiver<String>,
+//     status: Statusbase,
+//     object: T,
+// }
+// impl taskinteligente<Option<String>> {
+//     fn new() -> (Self, Sender<String>) {
+//         let (tx, rx) = channel();
+//         (
+//             taskinteligente {
+//                 reciever: rx,
+//                 status: Statusbase::Waiting,
+//                 object: None,
+//             },
+//             tx,
+//         )
+//     }
+// }
+// impl Task for taskinteligente<Option<String>> {
+//     fn run(&mut self) -> Statusbase {
+//         match self.status {
+//             Statusbase::Ready => todo!(),
+//             Statusbase::Running => todo!(),
+//             Statusbase::Waiting => match self.reciever.try_recv() {
+//                 Ok(msg) => {
+//                     self.object = Some(msg.clone());
+//                     self.status = Statusbase::Ready;
+//                     Statusbase::Ready
+//                 }
+//                 Err(_) => todo!(),
+//             },
+//
+//             Statusbase::Done => todo!(),
+//             Statusbase::Error(_) => todo!(),
+//         }
+//     }
+//
+//     fn status(&self) -> Statusbase {
+//         todo!()
+//     }
+//
+//     fn stop(&mut self) {
+//         todo!()
+//     }
+// }
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:8080").unwrap();
     for stream in listener.incoming() {

@@ -4,4 +4,6 @@ pub mod head;
 pub mod request;
 pub mod routers;
 pub mod server;
+pub mod threadbackgroud;
+pub mod threadmain;
 pub mod types;

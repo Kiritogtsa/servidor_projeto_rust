@@ -1,3 +1,5 @@
-use crate::model::{enuns::intoresult::Intoresult, routers::Args};
+use std::{net::TcpStream, sync::Arc};
 
-pub type myfunchandle = Box<dyn Fn(Option<Vec<Args>>) -> Intoresult + Send + Sync>;
+use crate::model::{enuns::intoresult::Intoresult, head::Head};
+
+pub type myfunchandle = Arc<dyn Fn(&mut TcpStream, Head) + Send + Sync>;
